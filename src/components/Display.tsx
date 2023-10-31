@@ -10,6 +10,8 @@ const Display = () => {
         justifyContent: "center",
         backgroundColor: "black",
         height: "20%",
+        position: "absolute",
+        bottom: "28%",
       }}
     >
       <View

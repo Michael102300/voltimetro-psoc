@@ -14,7 +14,7 @@ const Indicators = ({ mode }: IIndicators) => {
       <View
         style={{
           position: "relative",
-          top: -80,
+          top: -76,
           right: "14%",
         }}
       >

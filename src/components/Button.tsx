@@ -1,13 +1,22 @@
 import React from "react";
+import { StyleProp, DimensionValue } from "react-native";
 import { Button as ButtonRNE } from "@rneui/themed";
 
 interface IButton {
   title: string;
   backgroundColor: string;
   onClick: () => void;
+  width: DimensionValue | undefined;
+  disable?: boolean;
 }
 
-const Button = ({ title, backgroundColor, onClick }: IButton) => {
+const Button = ({
+  title,
+  backgroundColor,
+  onClick,
+  width,
+  disable,
+}: IButton) => {
   return (
     <ButtonRNE
       title={title}
@@ -18,10 +27,11 @@ const Button = ({ title, backgroundColor, onClick }: IButton) => {
         borderRadius: 30,
       }}
       containerStyle={{
-        width: "30%",
+        width: width,
       }}
       titleStyle={{ fontWeight: "bold" }}
       onPress={onClick}
+      disabled={disable}
     />
   );
 };
