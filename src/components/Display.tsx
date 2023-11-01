@@ -1,8 +1,10 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "@rneui/themed";
+import useValueVolts from "../hooks/useValueVolts";
 
 const Display = () => {
+  const { voltsDisplay } = useValueVolts();
   return (
     <View
       style={{
@@ -32,7 +34,7 @@ const Display = () => {
             fontSize: 70,
           }}
         >
-          Out Range
+          {voltsDisplay()}
         </Text>
       </View>
     </View>

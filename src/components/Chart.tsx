@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { useMode } from "../providers/mode.provider";
 
@@ -11,24 +11,17 @@ const Chart = () => {
       case 0:
         return "mV";
       default:
-        return "v";
+        return "V";
     }
   };
   return (
     <View style={{ position: "absolute", bottom: 0 }}>
       <LineChart
         data={{
-          labels: ["1", "2", "3", "4", "5", "6"],
+          labels: [" ", " ", ...mode!.labels],
           datasets: [
             {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * -100,
-              ],
+              data: [1, 1, ...mode!.volts],
             },
           ],
         }}

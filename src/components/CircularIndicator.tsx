@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Text } from "@rneui/themed";
 
@@ -6,25 +6,30 @@ import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Circle } from "react-native-svg";
 import Indicators from "./Indicators";
 import IndicatorsData from "../data/indicators-data.json";
+import useValueVolts from "../hooks/useValueVolts";
 
 const { width } = Dimensions.get("screen");
 const SIZE = width * 0.9;
 
 interface ICircularIndicator {
   mode: number;
-  volts?: number;
+  degress: string;
+  volts: number;
 }
 
-const CircularIndicator = ({ mode }: ICircularIndicator) => {
-  const rotateIndicator = "72deg";
+const CircularIndicator = ({ mode, degress, volts }: ICircularIndicator) => {
+  useEffect(() => {});
+
+  const rotateIndicator = degress;
   const transformRotate = {
     transform: [{ rotate: rotateIndicator }],
   };
+  console.log("IND V:", volts);
   return (
     <View>
       <AnimatedCircularProgress
         size={SIZE}
-        fill={50}
+        fill={volts}
         arcSweepAngle={180}
         rotation={270}
         lineCap="round"

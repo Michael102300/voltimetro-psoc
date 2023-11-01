@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Button as ButtonRN } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import CircularIndicator from "../components/CircularIndicator";
 import Button from "../components/Button";
@@ -7,6 +7,7 @@ import Display from "../components/Display";
 import { useMode } from "../providers/mode.provider";
 import useBLE from "../hooks/useBle";
 import Chart from "../components/Chart";
+import useValueVolts from "../hooks/useValueVolts";
 
 const HomePage = () => {
   const mode = useMode();
@@ -18,6 +19,7 @@ const HomePage = () => {
     connectedDevice,
     disconnectFromDevice,
   } = useBLE();
+  const { degress, voltsIndicator } = useValueVolts();
   const scanForDevice = async () => {
     const isPermissionEnabled = await requestPermissions();
     if (isPermissionEnabled) {
@@ -26,7 +28,11 @@ const HomePage = () => {
   };
   return (
     <View style={styles.container}>
-      <CircularIndicator mode={Number(mode?.mode)} />
+      <CircularIndicator
+        mode={Number(mode?.mode)}
+        degress={degress()}
+        volts={voltsIndicator()}
+      />
       <Display />
       <View
         style={{

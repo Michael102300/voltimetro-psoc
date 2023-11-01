@@ -11,6 +11,7 @@ import {
 import * as ExpoDevice from "expo-device";
 /* eslint-disable-next-line */
 import base64 from "react-native-base64";
+import { useMode } from "../providers/mode.provider";
 
 const BLE_HM_10_UUID = "0000ffe0-0000-1000-8000-00805f9b34fb";
 const BLE_HM_10_CHARACTERISTIC = "0000ffe1-0000-1000-8000-00805f9b34fb";
@@ -25,11 +26,14 @@ interface BluetoothLowEnergyApi {
   heartRate: number;
 }
 
+let count: number = -1;
+
 function useBLE(): BluetoothLowEnergyApi {
   const bleManager = useMemo(() => new BleManager(), []);
   const [allDevices, setAllDevices] = useState<Device[]>([]);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [heartRate, setHeartRate] = useState<number>(0);
+  const mode = useMode();
 
   const requestAndroid31Permissions = async () => {
     const bluetoothScanPermission = await PermissionsAndroid.request(
@@ -137,23 +141,29 @@ function useBLE(): BluetoothLowEnergyApi {
       console.log("No Data was recieved");
       return -1;
     }
+    const data = base64.decode(characteristic.value).replace(" ", "");
+    mode?.setCurrentVolt(Number(data.slice(0, data.length - 1)));
+    mode?.setVolts((prevState) => [
+      ...prevState,
+      Number(data.slice(0, data.length - 1)),
+    ]);
+    mode?.setLabels((prevState) => [...prevState, String(count++)]);
+    console.log("BLE1:", data);
 
-    console.log(base64.decode(characteristic.value));
-
-    /* const rawData = base64.decode(characteristic.value);
-    let innerHeartRate: number = -1;
-
-    const firstBitValue: number = Number(rawData) & 0x01;
-
-    if (firstBitValue === 0) {
-      innerHeartRate = rawData[1].charCodeAt(0);
-    } else {
-      innerHeartRate =
-        Number(rawData[1].charCodeAt(0) << 8) +
-        Number(rawData[2].charCodeAt(2));
+    switch (data[data.length - 1]) {
+      case "A":
+        mode?.setMode(0);
+        return;
+      case "B":
+        mode?.setMode(1);
+        return;
+      case "C":
+        mode?.setMode(2);
+        return;
+      default:
+        mode?.setMode(0);
+        return;
     }
-
-    setHeartRate(innerHeartRate); */
   };
   const startStreamingData = async (device: Device) => {
     if (device) {
