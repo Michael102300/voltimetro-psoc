@@ -18,6 +18,7 @@ const HomePage = () => {
     connectToDevice,
     connectedDevice,
     disconnectFromDevice,
+    sendData,
   } = useBLE();
   const { degress, voltsIndicator } = useValueVolts();
   const scanForDevice = async () => {
@@ -25,6 +26,10 @@ const HomePage = () => {
     if (isPermissionEnabled) {
       scanForPeripherals();
     }
+  };
+
+  const changeMode = (modeSelect: number, sendMode: string) => {
+    sendData(connectedDevice, `${sendMode}\r\n`);
   };
   return (
     <View style={styles.container}>
@@ -54,19 +59,19 @@ const HomePage = () => {
           <Button
             title="500mV"
             backgroundColor={mode?.mode == 0 ? "green" : "#E0E0E0"}
-            onClick={() => mode?.setMode(0)}
+            onClick={() => changeMode(0, "A")}
             width={"30%"}
           />
           <Button
             title="5V"
             backgroundColor={mode?.mode == 1 ? "green" : "#E0E0E0"}
-            onClick={() => mode?.setMode(1)}
+            onClick={() => changeMode(1, "B")}
             width={"30%"}
           />
           <Button
             title="50V"
             backgroundColor={mode?.mode == 2 ? "green" : "#E0E0E0"}
-            onClick={() => mode?.setMode(2)}
+            onClick={() => changeMode(2, "C")}
             width={"30%"}
           />
         </View>

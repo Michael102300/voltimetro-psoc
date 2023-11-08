@@ -18,13 +18,6 @@ interface ICircularIndicator {
 }
 
 const CircularIndicator = ({ mode, degress, volts }: ICircularIndicator) => {
-  useEffect(() => {});
-
-  const rotateIndicator = degress;
-  const transformRotate = {
-    transform: [{ rotate: rotateIndicator }],
-  };
-  console.log("IND V:", volts);
   return (
     <View>
       <AnimatedCircularProgress
@@ -46,9 +39,7 @@ const CircularIndicator = ({ mode, degress, volts }: ICircularIndicator) => {
           return (
             <>
               <Indicators mode={mode} />
-              <View style={[styles.mover, transformRotate]}>
-                <View style={[styles.indicator]} />
-              </View>
+
               <View style={[styles.containerText]}>
                 <Text style={[styles.textVolts2]}>
                   -{IndicatorsData[mode][5]}

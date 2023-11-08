@@ -27,6 +27,7 @@ export const ModeProvider = ({ children }: any) => {
   const [seconds, setSeconds] = useState<string[]>([]);
   const [currentVolt, setCurrentVolt] = useState<number>(0);
   const [labels, setLabels] = useState<string[]>([]);
+
   return (
     <ModeContext.Provider
       value={{

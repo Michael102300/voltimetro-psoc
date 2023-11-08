@@ -2,7 +2,7 @@ import { useMode } from "../providers/mode.provider";
 
 interface IUseValueVolts {
   degress: () => string;
-  voltsDisplay: () => string;
+  voltsDisplay: () => void;
   voltsIndicator: () => number;
 }
 
@@ -17,6 +17,10 @@ const useValueVolts = (): IUseValueVolts => {
         } else if (mode.currentVolt > -500) {
           return `270deg`;
         } else {
+          /* if (mode.currentVolt < -500 && mode.currentVolt < 0) {
+            return `${(9 / 50) * mode.currentVolt + 270}deg`;
+          } else {
+          } */
           return `${(9 / 50) * mode.currentVolt}deg`;
         }
 
@@ -26,14 +30,22 @@ const useValueVolts = (): IUseValueVolts => {
         } else if (mode.currentVolt > -5000) {
           return `270deg`;
         } else {
+          /* if (mode.currentVolt < -5000 && mode.currentVolt < 0) {
+            return `${(9 / 500) * mode.currentVolt + 270}deg`;
+          } else {
+          } */
           return `${(9 / 500) * mode.currentVolt}deg`;
         }
       case 2:
-        if (mode.currentVolt > 5000) {
+        if (mode.currentVolt > 50000) {
           return "90deg";
-        } else if (mode.currentVolt > -5000) {
+        } else if (mode.currentVolt > -50000) {
           return `270deg`;
         } else {
+          /* if (mode.currentVolt < -50000) {
+            return `${(9 / 5000) * mode.currentVolt + 270}deg`;
+          } else {
+          } */
           return `${(9 / 5000) * mode.currentVolt}deg`;
         }
 
@@ -42,7 +54,7 @@ const useValueVolts = (): IUseValueVolts => {
     }
   };
 
-  const voltsDisplay = (): string => {
+  const voltsDisplay = () => {
     switch (mode?.mode) {
       case 0:
         if (mode.currentVolt > 500 || mode.currentVolt < -500) {
@@ -54,20 +66,40 @@ const useValueVolts = (): IUseValueVolts => {
         if (mode.currentVolt > 5000 || mode.currentVolt < -5000) {
           return "Out of Range";
         } else {
-          return `${mode.currentVolt
-            .toString()
-            .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          if (mode.currentVolt < 1000 && mode.currentVolt > 0) {
+            return `0.${mode.currentVolt
+              .toString()
+              .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          } else if (mode.currentVolt >= -1000 && mode.currentVolt < 0) {
+            return `- 0.${mode.currentVolt
+              .toString()
+              .replace("-", "")
+              .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          } else {
+            return `${mode.currentVolt
+              .toString()
+              .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          }
         }
       case 2:
         if (mode.currentVolt > 50000 || mode.currentVolt < -50000) {
           return "Out of Range";
         } else {
-          return `${mode.currentVolt
-            .toString()
-            .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          if (mode.currentVolt < 1000 && mode.currentVolt > 0) {
+            return `0.${mode.currentVolt
+              .toString()
+              .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          } else if (mode.currentVolt >= -1000 && mode.currentVolt < 0) {
+            return `-0.${mode.currentVolt
+              .toString()
+              .replace("-", "")
+              .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          } else {
+            return `${mode.currentVolt
+              .toString()
+              .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}V`;
+          }
         }
-      default:
-        return "0";
     }
   };
 
